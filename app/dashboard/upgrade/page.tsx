@@ -10,8 +10,8 @@ import { useRouter } from "next/navigation";
 import React, { useTransition } from "react";
 
 export type UserDetails = {
-  email: string;
-  name: string;
+  email: any;
+  name: any;
 };
 
 const Price = () => {

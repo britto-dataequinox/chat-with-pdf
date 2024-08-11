@@ -48,6 +48,7 @@ const FileUploader = () => {
         toast.error("No file selected. Please try again.");
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [uploadCount],
   );
 
@@ -89,15 +90,19 @@ const FileUploader = () => {
             className={`radial-progress bg-red-300 text-white border-red-600 border-4 
           ${progress === 100 && "hidden"}`}
             role="progressbar"
-            style={{
-              "--value": progress,
-              "--size": "12rem",
-              "--thickness": "2px",
-            }}
+            style={
+              {
+                "--value": progress,
+                "--size": "12rem",
+                "--thickness": "2px",
+              } as React.CSSProperties
+            }
           >
             {progress} %
           </div>
-          {statusIcons[status!]}
+          {status && status in statusIcons
+            ? statusIcons[status as keyof typeof statusIcons]
+            : null}
           <p className="text-red-600 animate-pulse">{status}</p>
         </div>
       )}

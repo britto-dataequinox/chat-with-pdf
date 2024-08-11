@@ -85,6 +85,7 @@ const Chat = ({ id }: { id: string }) => {
     bottomChatRef.current?.scrollIntoView({
       behavior: "smooth",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
   useEffect(() => {
@@ -108,6 +109,7 @@ const Chat = ({ id }: { id: string }) => {
     });
 
     setMessages(newMessages);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [snapshot]);
 
   const title =

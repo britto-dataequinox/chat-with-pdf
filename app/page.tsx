@@ -18,6 +18,7 @@ export default function Home() {
     if (isSignedIn) {
       router.push("/dashboard");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSignedIn]);
 
   if (isSignedIn) {
