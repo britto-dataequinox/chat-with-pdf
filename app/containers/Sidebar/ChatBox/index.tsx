@@ -61,7 +61,7 @@ const Chat = ({ id }: { id: string }) => {
 
       if (!success) {
         setMessages((prev) =>
-          prev.slice(0, prev.length - 1).concat([
+          prev?.slice(0, prev.length - 1)?.concat([
             {
               role: "ai",
               message: `Whoops... ${message}`,
@@ -82,7 +82,7 @@ const Chat = ({ id }: { id: string }) => {
   );
 
   useEffect(() => {
-    bottomChatRef.current?.scrollIntoView({
+    bottomChatRef?.current?.scrollIntoView({
       behavior: "smooth",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -97,14 +97,14 @@ const Chat = ({ id }: { id: string }) => {
       return;
     }
 
-    const newMessages = snapshot.docs.map((doc) => {
-      const { role, message, createdAt } = doc.data();
+    const newMessages = snapshot?.docs?.map((doc) => {
+      const { role, message, createdAt } = doc?.data();
 
       return {
-        id: doc.id,
+        id: doc?.id,
         role,
         message,
-        createdAt: createdAt.toDate(),
+        createdAt: createdAt?.toDate(),
       };
     });
 
@@ -123,7 +123,7 @@ const Chat = ({ id }: { id: string }) => {
     const intervalId = setInterval(() => {
       setCurrentText((prevText) => {
         const newIndex = (prevText.length + 1) % (title.length + 1);
-        return title.slice(0, newIndex);
+        return title?.slice(0, newIndex);
       });
     }, 200);
 
@@ -136,100 +136,81 @@ const Chat = ({ id }: { id: string }) => {
         zIndex: 999,
         px: 4,
         py: 4,
-        mb: isMobile ? -8 : 0,
-        mt: isMobile ? 2 : 0,
       }}
     >
       {/* Render chat as a card for desktop */}
-      {(!isMobile || isOpen) && (
-        <Card
-          sx={{
-            mt: 2,
-            height: "75vh",
-            display: "flex",
-            flexDirection: "column",
-            background: "linear-gradient(to bottom, red, rgba(255, 0, 0, 0.7))",
-            borderRadius: 2,
-            boxShadow: 3,
-            position: "relative",
-            overflow: "hidden", // Hide scrollbars on Card
-          }}
-        >
-          {isMobile && (
-            <IconButton
-              onClick={() => setIsOpen(false)}
-              sx={{
-                position: "absolute",
-                top: 10,
-                right: 10,
-                color: "black",
-                fontWeight: "bold",
-                zIndex: 1000,
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          )}
-          <Box display="flex" flexDirection="column" height="100%">
+      <Card
+        sx={{
+          mt: 2,
+          height: "75vh",
+          display: "flex",
+          flexDirection: "column",
+          background: "linear-gradient(to bottom, red, rgba(255, 0, 0, 0.7))",
+          borderRadius: 2,
+          boxShadow: 3,
+          position: "relative",
+          overflow: "hidden", // Hide scrollbars on Card
+        }}
+      >
+        <Box display="flex" flexDirection="column" height="100%">
+          <Grid
+            container
+            direction="column"
+            flexGrow={1}
+            sx={{ overflowY: "auto", p: 2 }}
+          >
             <Grid
-              container
-              direction="column"
+              item
               flexGrow={1}
-              sx={{ overflowY: "auto", p: 2 }}
-            >
-              <Grid
-                item
-                flexGrow={1}
-                sx={{
-                  flexDirection: "column",
-                  display: "flex",
-                  maxHeight: "100%",
-                }}
-              >
-                {loading ? (
-                  <Grid
-                    container
-                    justifyContent="center"
-                    alignItems="center"
-                    sx={{ height: "100%" }}
-                  >
-                    <CircularProgress color="secondary" size={80} />
-                  </Grid>
-                ) : messages.length === 0 ? (
-                  <BotMessage
-                    key={"placeholder"}
-                    message={{
-                      role: "ai",
-                      message: "Ask me anything about the document!",
-                      createdAt: new Date(),
-                    }}
-                  />
-                ) : (
-                  messages.map((message, index) => (
-                    <BotMessage key={index} message={message} />
-                  ))
-                )}
-                <div ref={bottomChatRef} />
-              </Grid>
-            </Grid>
-            <Box
               sx={{
-                p: 2,
-                background: "rgba(255, 255, 255, 0.1)",
-                position: "sticky",
-                bottom: 0,
+                flexDirection: "column",
+                display: "flex",
+                maxHeight: "100%",
               }}
             >
-              <ChatText
-                handleSubmit={handleSubmit}
-                input={input}
-                setInput={setInput}
-                isPending={isPending}
-              />
-            </Box>
+              {loading ? (
+                <Grid
+                  container
+                  justifyContent="center"
+                  alignItems="center"
+                  sx={{ height: "100%" }}
+                >
+                  <CircularProgress color="secondary" size={80} />
+                </Grid>
+              ) : messages.length === 0 ? (
+                <BotMessage
+                  key={"placeholder"}
+                  message={{
+                    role: "ai",
+                    message: "Ask me anything about the document!",
+                    createdAt: new Date(),
+                  }}
+                />
+              ) : (
+                messages.map((message, index) => (
+                  <BotMessage key={index} message={message} />
+                ))
+              )}
+              <div ref={bottomChatRef} />
+            </Grid>
+          </Grid>
+          <Box
+            sx={{
+              p: 2,
+              background: "rgba(255, 255, 255, 0.1)",
+              position: "sticky",
+              bottom: 0,
+            }}
+          >
+            <ChatText
+              handleSubmit={handleSubmit}
+              input={input}
+              setInput={setInput}
+              isPending={isPending}
+            />
           </Box>
-        </Card>
-      )}
+        </Box>
+      </Card>
     </Box>
   );
 };

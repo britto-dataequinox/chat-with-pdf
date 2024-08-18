@@ -33,7 +33,7 @@ const page = async ({
     .doc(id)
     .get();
 
-  const url = ref.data()?.downloadURL;
+  const url = ref?.data()?.downloadURL;
   return (
     <Box sx={{ display: "flex", height: "100%" }}>
       <Box
@@ -46,10 +46,10 @@ const page = async ({
         }}
       >
         <Grid container>
-          <Grid item xs={12} md={6} lg={6} xl={6}>
+          <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
             <PdfViewer url={url} />
           </Grid>
-          <Grid item xs={12} md={6} lg={6} xl={6}>
+          <Grid item sm={12} xs={12} md={6} lg={6} xl={6}>
             <Chat id={id} />
           </Grid>
         </Grid>
