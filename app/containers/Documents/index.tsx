@@ -5,6 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 import { adminDb } from "@/firebaseAdmin";
 import Document from "./Document";
 import PlaceholderDocument from "./PlacholderDocument";
+import { Box } from "@mui/material";
 
 interface DocumentData {
   id: string;
@@ -37,7 +38,7 @@ const Documents = async () => {
   });
 
   return (
-    <div className="flex flex-wrap p-5 bg-gray-100 justify-center lg:justify-start rounded-sm gap-5 max-w-7xl mx-auto">
+    <Box className="flex flex-wrap p-5 bg-gray-100 justify-center lg:justify-start rounded-sm gap-5 max-w-7xl mx-auto">
       {documents.map(({ id, name, downloadURL, size }) => (
         <Document
           key={id}
@@ -48,7 +49,7 @@ const Documents = async () => {
         />
       ))}
       <PlaceholderDocument />
-    </div>
+    </Box>
   );
 };
 

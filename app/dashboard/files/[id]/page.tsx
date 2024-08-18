@@ -3,7 +3,18 @@ import Chat from "@/app/containers/Sidebar/ChatBox";
 import { adminDb } from "@/firebaseAdmin";
 import { auth } from "@clerk/nextjs/server";
 import React from "react";
-import { Grid, Box } from "@mui/material";
+import {
+  Grid,
+  Box,
+  CssBaseline,
+  Drawer,
+  Toolbar,
+  IconButton,
+  Divider,
+} from "@mui/material";
+import { MenuIcon } from "lucide-react";
+
+const drawerWidth = 300;
 
 const page = async ({
   params: { id },
@@ -24,26 +35,26 @@ const page = async ({
 
   const url = ref.data()?.downloadURL;
   return (
-    <Grid container direction="row" sx={{ height: "100%", overflow: "hidden" }}>
-      <Grid item xs={12} sm={12} lg={4} sx={{ overflowY: "hidden" }}>
-        <Chat id={id} />
-      </Grid>
-      <Grid
-        item
-        mt={5}
-        xs={12}
-        sm={12}
-        lg={8}
+    <Box sx={{ display: "flex", height: "100%" }}>
+      <Box
+        component={"main"}
         sx={{
-          backgroundColor: "gray.100",
-          order: { lg: -1 },
+          flexGrow: 1,
+          p: 3,
+          backgroundColor: "gray",
           overflow: "auto",
-          zIndex: 0,
         }}
       >
-        <PdfViewer url={url} />
-      </Grid>
-    </Grid>
+        <Grid container>
+          <Grid item xs={12} md={6} lg={6} xl={6}>
+            <PdfViewer url={url} />
+          </Grid>
+          <Grid item xs={12} md={6} lg={6} xl={6}>
+            <Chat id={id} />
+          </Grid>
+        </Grid>
+      </Box>
+    </Box>
   );
 };
 

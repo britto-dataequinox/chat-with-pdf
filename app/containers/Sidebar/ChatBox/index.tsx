@@ -140,64 +140,11 @@ const Chat = ({ id }: { id: string }) => {
         mt: isMobile ? 2 : 0,
       }}
     >
-      <Box sx={{ display: isMobile ? "block" : "flex", mb: 2 }}>
-        <IconButton
-          onClick={() => setIsOpen((prev) => !prev)}
-          sx={{
-            position: "relative",
-            backgroundColor: "red",
-            color: "white",
-            borderRadius: "50%",
-            mb: 2,
-            transition: "transform 0.3s",
-            "&:hover": {
-              transform: "scale(1.1)",
-              background: "darkred",
-            },
-            "@media (max-width: 600px)": {
-              bottom: 15,
-              right: 15,
-            },
-          }}
-        >
-          <ChatIcon />
-        </IconButton>
-        {!isMobile && (
-          <Typography
-            variant={"inherit"}
-            sx={{
-              color: "red",
-              fontWeight: "bold",
-              px: 2,
-              fontSize: "12px",
-              letterSpacing: 2,
-              textTransform: "uppercase",
-              textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
-              animation: `fadeIn 0.5s ease-in-out`,
-              "@keyframes fadeIn": {
-                from: {
-                  opacity: 0,
-                  transform: "translateY(-20px)",
-                },
-                to: {
-                  opacity: 1,
-                  transform: "translateY(0)",
-                },
-              },
-            }}
-          >
-            {currentText}
-          </Typography>
-        )}
-      </Box>
-
       {/* Render chat as a card for desktop */}
       {(!isMobile || isOpen) && (
         <Card
           sx={{
-            width: isMobile ? "325px" : "450px",
             mt: 2,
-            maxWidth: "800px",
             height: "75vh",
             display: "flex",
             flexDirection: "column",

@@ -1,14 +1,15 @@
 import React from "react";
 import Documents from "../containers/Documents";
+import { Box, Typography } from "@mui/material";
 
 const Dashboard = () => {
   return (
-    <div className="h-full max-w-7xl mx-auto mt-4">
-      <h1 className="text-3xl p-5 bg-gray-100 font-extralight text-red-600">
+    <Box className="h-full max-w-7xl mx-auto mt-4">
+      <Typography className="text-3xl p-5 bg-gray-100 font-extralight text-red-600">
         My Documents
-      </h1>
+      </Typography>
       <Documents />
-    </div>
+    </Box>
   );
 };
 

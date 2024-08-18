@@ -8,6 +8,7 @@ import {
   Button,
   IconButton,
   useTheme,
+  Box,
 } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import { SignedIn, UserButton } from "@clerk/nextjs";
@@ -38,7 +39,7 @@ const Header = () => {
           <span style={{ color: "black", fontWeight: "bold" }}>PDF</span>
         </Typography>
         <SignedIn>
-          <div className="flex items-center space-x-2">
+          <Box className="flex items-center space-x-2">
             {isMobile ? (
               <IconButton
                 component={Link}
@@ -66,7 +67,7 @@ const Header = () => {
               <FilePlus2 style={{ color: "red" }} />
             </IconButton>
             <UserButton />
-          </div>
+          </Box>
         </SignedIn>
       </Toolbar>
     </AppBar>

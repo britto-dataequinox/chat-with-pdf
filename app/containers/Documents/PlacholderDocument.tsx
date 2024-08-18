@@ -5,7 +5,7 @@ import React from "react";
 import { FrownIcon, PlusCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import userSubscription from "@/utils/hooks/userSubscription";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 const PlaceholderDocument = () => {
   const router = useRouter();
@@ -19,17 +19,17 @@ const PlaceholderDocument = () => {
   return (
     <>
       {isOverFileLimit ? (
-        <div className="flex flex-col items-center justify-center w-64 h-80 rounded-xl bg-gray-200 drop-shadow-md text-gray-400">
+        <Box className="flex flex-col items-center justify-center w-64 h-80 rounded-xl bg-gray-200 drop-shadow-md text-gray-400">
           <FrownIcon className="h-16 w-16" />
-          <p>Pro features coming soon...</p>
-        </div>
+          <Typography variant="caption">Pro features coming soon...</Typography>
+        </Box>
       ) : (
         <Button
           onClick={addDoc}
           className="flex flex-col items-center justify-center w-64 h-80 rounded-xl bg-gray-200 drop-shadow-md text-gray-400"
         >
           <PlusCircleIcon className="h-16 w-16" />
-          <p>Add a document</p>
+          <Typography variant="caption">Add a document</Typography>
         </Button>
       )}
     </>

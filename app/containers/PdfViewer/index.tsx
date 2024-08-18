@@ -11,7 +11,18 @@ import {
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { Box, Grid, Tooltip } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import "react-pdf/dist/Page/TextLayer.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -41,116 +52,86 @@ const PdfViewer = ({ url }: { url: string }) => {
     }
   };
 
-  return (
-    <div className="flex flex-col justify-center items-center mt-4">
-      <div className="sticky top-0 z-50 bg-gradient-to-r from-red-500 to-white p-2 rounded-b-lg">
-        <Grid container spacing={2} justifyContent="center" alignItems="center">
-          <Grid item style={{ margin: "0 8px" }}>
-            <Tooltip title="Previous Page">
-              <Button
-                variant="outline"
-                disabled={pageNumber === 1}
-                onClick={() => {
-                  if (pageNumber > 1) {
-                    setPageNumber(pageNumber - 1);
-                  }
-                }}
-              >
-                <ChevronLeft />
-              </Button>
-            </Tooltip>
-          </Grid>
-          <Grid item style={{ margin: "0 8px", textAlign: "center" }}>
-            <p>
-              {pageNumber} of {numPages}
-            </p>
-          </Grid>
-          <Grid item style={{ margin: "0 8px" }}>
-            <Tooltip title="Next Page">
-              <Button
-                variant="outline"
-                disabled={pageNumber === numPages}
-                onClick={handleNextPage}
-              >
-                <ChevronRight />
-              </Button>
-            </Tooltip>
-          </Grid>
-          <Grid item style={{ margin: "0 8px" }}>
-            <Tooltip title="Rotate">
-              <Button
-                variant="outline"
-                onClick={() => setRotation((rotation + 90) % 360)}
-              >
-                <RotateCcw />
-              </Button>
-            </Tooltip>
-          </Grid>
-          <Grid item style={{ margin: "0 8px" }}>
-            <Tooltip title="Zoom In">
-              <Button
-                variant="outline"
-                disabled={scale >= 1.5}
-                onClick={() => setScale(scale * 1.2)}
-              >
-                <ZoomInIcon />
-              </Button>
-            </Tooltip>
-          </Grid>
-          <Grid item style={{ margin: "0 8px" }}>
-            <Tooltip title="Zoom Out">
-              <Button
-                variant="outline"
-                disabled={scale <= 0.75}
-                onClick={() => setScale(scale / 1.2)}
-              >
-                <ZoomOutIcon />
-              </Button>
-            </Tooltip>
-          </Grid>
-        </Grid>
-      </div>
+  const handlePrevPage = () => {
+    if (pageNumber > 1) {
+      setPageNumber(pageNumber - 1);
+    }
+  };
 
-      {!file ? (
-        <Loader2Icon className="animate-spin h-20 w-20 text-red-600 mt-20" />
-      ) : (
-        <Box mt={4}>
-          <Box
-            sx={{
-              maxHeight: "75vh", // Adjust for larger screens
-              overflowY: "scroll",
-              background:
-                "linear-gradient(to bottom, rgba(255, 0, 0, 0.8), rgba(255, 255, 255, 0.8))",
-              "&::-webkit-scrollbar": {
-                width: "8px",
-              },
-              "&::-webkit-scrollbar-thumb": {
-                background:
-                  "linear-gradient(to bottom, rgba(255, 0, 0, 0.8), rgba(255, 255, 255, 0.8))",
-                borderRadius: "4px",
-              },
-              "&::-webkit-scrollbar-track": {
-                background: "white",
-              },
-            }}
-          >
-            <Document
-              loading={null}
-              file={file}
-              rotate={rotation}
-              onLoadSuccess={onDocumentLoadSuccess}
-              className={"shadow-lg"}
-            >
-              <Page
-                className={"shadow-lg"}
-                scale={scale}
-                pageNumber={pageNumber}
-              />
-            </Document>
-          </Box>
-        </Box>
-      )}
-    </div>
+  const handleZoomIn = () => {
+    setScale((prevScale) => prevScale + 0.2);
+  };
+
+  const handleZoomOut = () => {
+    setScale((prevScale) => Math.max(prevScale - 0.2, 0.5));
+  };
+
+  const handleRotate = () => {
+    setRotation((prevRotation) => prevRotation + 90);
+  };
+
+  return (
+    <Box sx={{ height: "85vh", overflow: "auto" }}>
+      <Card
+        variant="outlined"
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
+        }}
+      >
+        <CardHeader
+          title={""}
+          action={
+            <>
+              <Tooltip title="Previous Page">
+                <IconButton onClick={handlePrevPage} disabled={pageNumber <= 1}>
+                  <ChevronLeft />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Next Page">
+                <IconButton
+                  onClick={handleNextPage}
+                  disabled={numPages ? pageNumber >= numPages : true}
+                >
+                  <ChevronRight />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Zoom In">
+                <IconButton onClick={handleZoomIn}>
+                  <ZoomInIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Zoom Out">
+                <IconButton onClick={handleZoomOut} disabled={scale <= 0.5}>
+                  <ZoomOutIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Rotate">
+                <IconButton onClick={handleRotate}>
+                  <RotateCcw />
+                </IconButton>
+              </Tooltip>
+            </>
+          }
+        />
+        <CardContent
+          className="custom-scrollbar"
+          sx={{
+            flex: 1,
+            overflowY: "auto",
+          }}
+        >
+          <Document file={file} onLoadSuccess={onDocumentLoadSuccess}>
+            <Page pageNumber={pageNumber} scale={scale} rotate={rotation} />
+          </Document>
+          <Typography variant="body2" align="center" sx={{ mt: 2 }}>
+            Page {pageNumber} of {numPages}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 

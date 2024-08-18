@@ -13,7 +13,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PdfThumbnail from "./PdfThumbnail";
 import userSubscription from "@/utils/hooks/userSubscription";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import ConfirmationModal from "../ConfirmModal";
 
 const Document = ({
   id,
@@ -42,25 +43,25 @@ const Document = ({
   };
 
   return (
-    <div>
-      <div className="flex flex-col w-64 h-80 rounded-xl bg-white drop-shadow-md justify-between p-4 transition-all transform hover:scale-105 hover:bg-red-600 hover:text-white cursor-pointer group">
-        <div
+    <Box>
+      <Box className="flex flex-col w-64 h-80 rounded-xl bg-white drop-shadow-md justify-between p-4 transition-all transform hover:scale-105 hover:bg-red-600 hover:text-white cursor-pointer group">
+        <Box
           onClick={() => router.push(`/dashboard/files/${id}`)}
           className="flex-1"
         >
-          <p className="font-semibold overflow-ellipsis overflow-hidden whitespace-nowrap">
+          <Typography className="font-semibold overflow-ellipsis overflow-hidden whitespace-nowrap">
             {name}
-          </p>
+          </Typography>
 
-          <p className="text-sm text-gray-500 group-hover:text-red-100">
+          <Typography className="text-sm text-gray-500 group-hover:text-red-100">
             {byteSize(size).value} KB
-          </p>
+          </Typography>
           {/* PDF Thumbnail */}
-          <div className="mt-2">
+          <Box className="mt-2">
             <PdfThumbnail />
-          </div>
-        </div>
-        <div className="flex space-x-2 justify-end">
+          </Box>
+        </Box>
+        <Box className="flex space-x-2 justify-end">
           <Button variant={"outline"} asChild>
             <a href={downloadUrl} download>
               <DownloadCloud className="h-6 w-6 text-red-600" />
@@ -86,28 +87,21 @@ const Document = ({
               <Trash2 className="h-6 w-6 text-red-600" />
             </Button>
           )}
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Confirmation Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-4">
-            <h2 className="font-semibold">
-              Are you sure you want to delete this document?
-            </h2>
-            <div className="flex space-x-2 mt-4">
-              <Button onClick={handleDelete}>Yes</Button>
-              <Button variant="outline" onClick={() => setIsModalOpen(false)}>
-                No
-              </Button>
-            </div>
-          </div>
-        </div>
+        <ConfirmationModal
+          open={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onConfirm={handleDelete}
+          title="Are you sure you wan't to delete this document ?"
+        />
       )}
 
       <ToastContainer />
-    </div>
+    </Box>
   );
 };
 

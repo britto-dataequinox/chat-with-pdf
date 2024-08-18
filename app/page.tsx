@@ -26,8 +26,8 @@ export default function Home() {
   }
 
   return (
-    <main className="flex-1 overflow-scroll p-2 lg:p-5 bg-gradient-to-bl from-white to-red-600">
-      <div className="bg-white py-24 sm:py-32 rounded-md drop-shadow-xl">
+    <Box className="flex-1 overflow-scroll p-2 lg:p-5 bg-gradient-to-bl from-white to-red-600">
+      <Box className="bg-white py-24 sm:py-32 rounded-md drop-shadow-xl">
         <Box sx={{ position: "fixed", top: 2, px: 4, py: 2 }}>
           <BtmIndustriesTitle />
         </Box>
@@ -46,7 +46,7 @@ export default function Home() {
         >
           <Footer />
         </Box>
-      </div>
-    </main>
+      </Box>
+    </Box>
   );
 }
